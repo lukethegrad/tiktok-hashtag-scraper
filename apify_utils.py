@@ -18,9 +18,9 @@ def run_hashtag_scraper(hashtag: str, max_results: int) -> pd.DataFrame:
 
         input_payload = {
             "hashtag": hashtag,
-            "resultsPerPage": max_results,
             "maxItems": max_results
         }
+
 
         st.write("🏷 Running Apify hashtag scraper with:")
         st.json(input_payload)
