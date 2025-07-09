@@ -4,7 +4,8 @@ import pandas as pd
 from apify_utils import run_hashtag_scraper  # You'll implement this next
 from spotify_scraper import enrich_with_spotify
 from label_filter import filter_unsigned_tracks
-from data_utils import filter_music_only
+from data_utils import split_music_and_original
+
 
 st.set_page_config(page_title="TikTok Hashtag Discovery", layout="wide")
 
