@@ -72,9 +72,12 @@ def run_hashtag_scraper(hashtag: str, max_results: int) -> pd.DataFrame:
                         "shareCount": "shareCount",
                         "commentCount": "commentCount",
                         "playCount": "playCount",
-                        "webVideoUrl": "video_url",
-                        "createTimeISO": "Create Time"
+                        "webVideoUrl": "video_url"
                     })
+
+                    # ✅ Add formatted date if present
+                    if "createTimeISO" in df.columns:
+                        df["Create Time"] = pd.to_datetime(df["createTimeISO"]).dt.date
 
                     # ✅ Debug preview
                     st.write("🔍 Sample of flattened data:")
