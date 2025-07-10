@@ -14,13 +14,13 @@ def run_hashtag_scraper(hashtag: str, max_results: int) -> pd.DataFrame:
     Returns a DataFrame with all extracted metadata.
     """
     try:
+        hashtag = hashtag.strip().replace("#", "")  # ✅ Sanitize input
         hashtag_actor = "clockworks~tiktok-hashtag-scraper"
 
         input_payload = {
             "hashtag": hashtag,
             "maxItems": max_results
         }
-
 
         st.write("🏷 Running Apify hashtag scraper with:")
         st.json(input_payload)
@@ -70,7 +70,15 @@ def run_hashtag_scraper(hashtag: str, max_results: int) -> pd.DataFrame:
 
         return df
 
-    except Exception as e:
-        st.error("❌ Failed to run hashtag scraper.")
+    except requests.exceptions.HTTPError as e:
+        st.error("❌ Failed to run hashtag scraper (HTTP error).")
+        if e.response is not None:
+            st.error(f"🔍 Apify response:\n{e.response.text}")
         st.error(str(e))
         return pd.DataFrame()
+
+    except Exception as e:
+        st.error("❌ Unexpected error when running hashtag scraper.")
+        st.error(str(e))
+        return pd.DataFrame()
+
