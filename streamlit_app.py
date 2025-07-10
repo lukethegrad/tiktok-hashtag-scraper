@@ -37,7 +37,7 @@ if st.button("1⃣ Scrape TikTok Hashtag"):
         display_cols = [
             "Music", "Music author", "playCount", "diggCount",
             "commentCount", "shareCount", "collectCount",
-            "Text", "video_url", "id"
+            "Text", "video_url", "id", "Create Time"
         ]
         st.dataframe(sorted_df[display_cols])
 
@@ -54,7 +54,7 @@ if "hashtag_df" in st.session_state and st.button("2⃣ Filter Music / Original 
     display_cols = [
         "Music", "Music author", "playCount", "diggCount",
         "commentCount", "shareCount", "collectCount",
-        "Text", "video_url", "id"
+        "Text", "video_url", "id", "Create Time"
     ]
 
     st.subheader("🎵 Music-Based Videos")
@@ -78,7 +78,7 @@ if "music_df" in st.session_state and st.button("3⃣ Enrich with Spotify"):
         st.session_state["spotify_df"] = display_df
 
         st.success("✅ Spotify enrichment complete.")
-        display_cols = ["Music", "Music author", "Label", "diggCount", "shareCount", "playCount", "commentCount"]
+        display_cols = ["Music", "Music author", "Label", "diggCount", "shareCount", "playCount", "commentCount", "Create Time"]
         st.subheader("🎧 Enriched Songs (Non-Original Sounds)")
         st.dataframe(display_df[display_cols])
 
@@ -94,7 +94,7 @@ if "spotify_df" in st.session_state and st.button("4️⃣ Show Unsigned Songs")
 
         st.success(f"🆓 Found {len(unsigned_df)} unsigned or unknown-label songs.")
         st.subheader("🆓 Unsigned or Unknown-Label Songs")
-        display_cols = ["Music", "Music author", "Label", "diggCount", "shareCount", "playCount", "commentCount"]
+        display_cols = ["Music", "Music author", "Label", "diggCount", "shareCount", "playCount", "commentCount", "Create Time"]
         st.dataframe(unsigned_df[display_cols])
 
         csv = unsigned_df.to_csv(index=False).encode("utf-8")
