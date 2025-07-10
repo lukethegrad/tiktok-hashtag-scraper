@@ -61,7 +61,6 @@ def run_hashtag_scraper(hashtag: str, max_results: int) -> pd.DataFrame:
                         "diggCount": "diggCount",
                         "shareCount": "shareCount",
                         "commentCount": "commentCount",
-                        "collectCount": "collectCount",  # ✅ NEW
                         "playCount": "playCount",
                         "videoMeta.duration": "Duration (seconds)",
                         "musicMeta.musicName": "Music",
