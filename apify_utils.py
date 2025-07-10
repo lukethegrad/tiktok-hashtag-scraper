@@ -72,7 +72,8 @@ def run_hashtag_scraper(hashtag: str, max_results: int) -> pd.DataFrame:
                         "shareCount": "shareCount",
                         "commentCount": "commentCount",
                         "playCount": "playCount",
-                        "webVideoUrl": "video_url"
+                        "webVideoUrl": "video_url",
+                        "createTimeISO": "Create Time"
                     })
 
                     # ✅ Debug preview
