@@ -11,6 +11,8 @@ APIFY_API_KEY = os.getenv("APIFY_API_KEY")
 
 def run_hashtag_scraper(hashtag: str, max_results: int) -> pd.DataFrame:
     try:
+        import time
+
         hashtag = hashtag.strip().replace("#", "")
         hashtag_actor = "clockworks~tiktok-hashtag-scraper"
 
@@ -54,19 +56,28 @@ def run_hashtag_scraper(hashtag: str, max_results: int) -> pd.DataFrame:
                 if items:
                     st.success(f"✅ Received {len(items)} items from Apify.")
                     df = pd.DataFrame(items)
+
+                    # ✅ Flatten nested metadata
+                    df["Music"] = df["musicMeta"].apply(lambda x: x.get("musicName") if isinstance(x, dict) else None)
+                    df["Music author"] = df["musicMeta"].apply(lambda x: x.get("musicAuthor") if isinstance(x, dict) else None)
+                    df["Music original?"] = df["musicMeta"].apply(lambda x: x.get("musicOriginal") if isinstance(x, dict) else None)
+                    df["Duration (seconds)"] = df["videoMeta"].apply(lambda x: x.get("duration") if isinstance(x, dict) else None)
+
+                    # ✅ Rename flat fields
                     df = df.rename(columns={
                         "authorMeta.name": "Author",
                         "text": "Text",
-                        "id": "id",  # ✅ TikTok ID
+                        "id": "id",  # TikTok ID
                         "diggCount": "diggCount",
                         "shareCount": "shareCount",
                         "commentCount": "commentCount",
                         "playCount": "playCount",
-                        "videoMeta.duration": "Duration (seconds)",
-                        "musicMeta.musicName": "Music",
-                        "musicMeta.musicAuthor": "Music author",
                         "webVideoUrl": "video_url"
                     })
+
+                    # ✅ Debug preview
+                    st.write("🔍 Sample of flattened data:")
+                    st.dataframe(df[["Music", "Music author", "playCount", "video_url"]].head())
 
                     return df
 
