@@ -57,15 +57,18 @@ def run_hashtag_scraper(hashtag: str, max_results: int) -> pd.DataFrame:
                     df = df.rename(columns={
                         "authorMeta.name": "Author",
                         "text": "Text",
+                        "id": "id",  # ✅ TikTok ID
                         "diggCount": "diggCount",
                         "shareCount": "shareCount",
-                        "playCount": "playCount",
                         "commentCount": "commentCount",
+                        "collectCount": "collectCount",  # ✅ NEW
+                        "playCount": "playCount",
                         "videoMeta.duration": "Duration (seconds)",
                         "musicMeta.musicName": "Music",
                         "musicMeta.musicAuthor": "Music author",
                         "webVideoUrl": "video_url"
                     })
+
                     return df
 
             time.sleep(interval)
