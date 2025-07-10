@@ -71,22 +71,20 @@ if "music_df" in st.session_state and st.button("3⃣ Enrich with Spotify"):
         )
         spotify_df = enrich_with_spotify(spotify_input_df)
 
-        # Rename back for consistency
+        # Rename back for display
         display_df = spotify_df.rename(
             columns={"Song Title": "Music", "Artist": "Music author"}
         )
         st.session_state["spotify_df"] = display_df
 
         st.success("✅ Spotify enrichment complete.")
-
-        display_cols = [
-            "Music", "Music author", "Label",
-            "playCount", "diggCount", "commentCount", "shareCount", "collectCount",
-            "Text", "video_url", "id"
-        ]
-
-        st.subheader("🎧 Enriched Songs")
+        display_cols = ["Music", "Music author", "Label", "diggCount", "shareCount", "playCount", "commentCount"]
+        st.subheader("🎧 Enriched Songs (Non-Original Sounds)")
         st.dataframe(display_df[display_cols])
+
+        if "original_df" in st.session_state:
+            st.subheader("📼 Original Sounds (Not Enriched)")
+            st.dataframe(st.session_state["original_df"])
 
 # Step 5 — Filter Unsigned Songs
 if "spotify_df" in st.session_state and st.button("4️⃣ Show Unsigned Songs"):
@@ -95,15 +93,13 @@ if "spotify_df" in st.session_state and st.button("4️⃣ Show Unsigned Songs")
         st.session_state["unsigned_df"] = unsigned_df
 
         st.success(f"🆓 Found {len(unsigned_df)} unsigned or unknown-label songs.")
-
-        display_cols = [
-            "Music", "Music author", "Label",
-            "playCount", "diggCount", "commentCount", "shareCount", "collectCount",
-            "Text", "video_url", "id"
-        ]
-
         st.subheader("🆓 Unsigned or Unknown-Label Songs")
+        display_cols = ["Music", "Music author", "Label", "diggCount", "shareCount", "playCount", "commentCount"]
         st.dataframe(unsigned_df[display_cols])
 
-        csv = unsigned_df[display_cols].to_csv(index=False).encode("utf-8")
+        csv = unsigned_df.to_csv(index=False).encode("utf-8")
         st.download_button("⬇️ Download Unsigned Songs CSV", csv, "unsigned_tiktok_songs.csv", "text/csv")
+
+        if "original_df" in st.session_state:
+            st.subheader("📼 Original Sounds (Not Enriched)")
+            st.dataframe(st.session_state["original_df"])
